@@ -51,10 +51,14 @@ You can configure the slice that is rendered. If it is not the latest, the rende
 
 If you change the tab or minimize the browser, the gameloop stops, but the commands continue to be received over the network. When you reactivate the tab, the history of the game states of that lost period is reconstructed, thereby resynchronizing the game.
 
-The game
+When I need to generate random numbers, I use a pseudo-random algorithm with seeds (Mersenne Twister), in such a way that all pairs generate the same numbers each time.
+I keep these numbers in an array in case I have to rewrite the history of the game states, recover the ones that were generated at the time.
+
+## The game
 
 The game is very simple and does not have much value.
 The objective is to create the pieces so that it works in p2p multiplayer and that these pieces can be used later in more elaborate games.
 
-When I need to generate random numbers, I use a pseudo-random algorithm with seeds (Mersenne Twister), in such a way that all pairs generate the same numbers each time.
-I keep these numbers in an array in case I have to rewrite the history of the game states, recover the ones that were generated at the time.
+<img style="margin-left:10px;" src="docs/assets/demo.gif">
+
+[You can play the demo here (in localhost)](https://supertorpe.github.io/p2p-game-poc)
