@@ -1,2 +1,60 @@
 # p2p-game-poc
 HTML5 Multiplayer p2p (WebRTC) demo: phaser 3 as game engine + planck.js as physics engine
+
+## Features
+
+This is a proof of concept to see the feasibility of creating p2p HTML5 multiplayer games on a mesh network.
+
+The communication between the browsers is done through WebRTC.
+
+The signaling is done with deepstream.io or firebase (even with the LocalStorage during development).
+
+Comment and uncomment the lines of the index.html to establish the desired signaling:
+
+```js
+<!-- localstorage signaling (only for localhost)-->
+<script src="./signaling-localstorage.js" defer></script>
+
+<!-- firebase signaling -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js" defer></script>
+<script src="https://unpkg.com/mplaynet@latest/dist/mplaynet-firebase.umd.min.js" defer></script>
+<script src="./signaling-firebase.js" defer></script>
+
+<!-- deepstream.io signaling -->
+<script src="//cdn.jsdelivr.net/npm/@deepstream/client@5.1.10/dist/bundle/ds.min.js" defer></script>
+<script src="https://unpkg.com/mplaynet@latest/dist/mplaynet-deepstream.umd.min.js" defer></script>
+<script src="./signaling-deepstream.js" defer></script>
+```
+If you choose deepstream or firebase, fill in the connection details in signaling-deepstream.js or in signaling-firebase.js
+
+All the management of the mesh network (signaling, connections, sending / receiving messages) is encapsulated into [mplaynet](https://github.com/supertorpe/mplaynet).
+
+Once the signaling has finished and the connections have been established, all traffic goes directly between the browsers.
+
+The peers are synchronized and agree on the game start time.
+
+Once the game starts, the time is divided into slices (e.g. 100ms).
+
+Each peer broadcast its commands -its keystrokes-, indicating the slice to which they belong. As the commands of the other players arrive from the network, they are stored in a buffer.
+
+Each slice corresponds to a game state (world and objects from planckjs, scoreboard and commands -local and remote-).
+Before calculating the next game state, the command buffer is traversed to assign them to the corresponding game state.
+
+To calculate the next game state, It clones the current game state and physics is calculated applying the commands.
+
+A list of the n-last slices is stored in memory.
+
+If commands arrive from a slice prior to the current one, the history of the game states is recalculated from that slice on. Thus, all peers keep game state synchronized, despite latency.
+
+You can configure the slice that is rendered. If it is not the latest, the rendering can interpolate between the current state and the next.
+
+If you change the tab or minimize the browser, the gameloop stops, but the commands continue to be received over the network. When you reactivate the tab, the history of the game states of that lost period is reconstructed, thereby resynchronizing the game.
+
+The game
+
+The game is very simple and does not have much value.
+The objective is to create the pieces so that it works in p2p multiplayer and that these pieces can be used later in more elaborate games.
+
+When I need to generate random numbers, I use a pseudo-random algorithm with seeds (Mersenne Twister), in such a way that all pairs generate the same numbers each time.
+I keep these numbers in an array in case I have to rewrite the history of the game states, recover the ones that were generated at the time.

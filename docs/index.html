@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>html5 p2p multiplayer demo</title>
+    <link rel="stylesheet" href="game.css" />
+    <script src="https://unpkg.com/mplaynet@latest/dist/mplaynet.umd.min.js" defer></script>
+    <!-- localstorage signaling (only for localhost)-->
+    <script src="./signaling-localstorage.js" defer></script>
+    <!-- firebase signaling
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js" defer></script>
+    <script src="https://unpkg.com/mplaynet@latest/dist/mplaynet-firebase.umd.min.js" defer></script>
+    <script src="./signaling-firebase.js" defer></script>
+    -->
+    <!-- deepstream.io signaling
+    <script src="//cdn.jsdelivr.net/npm/@deepstream/client@5.1.10/dist/bundle/ds.min.js" defer></script>
+    <script src="https://unpkg.com/mplaynet@latest/dist/mplaynet-deepstream.umd.min.js" defer></script>
+    <script src="./signaling-deepstream.js" defer></script>
+    -->
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser.js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/planck-js@0.3.23/dist/planck.min.js" defer></script>
+    <script src="./MersenneTwister19937class.js" defer></script>
+    <script src="./scene.js" defer></script>
+    <script src="./pairing.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="firstStep card">
+        <button id="btnHostGame">HOST</button>
+        <button id="btnJoinGame">JOIN</button>
+      </div>
+      <div class="hostGame card">
+        <input type="text" id="inputHostUsername" placeholder="Username" />
+        <button id="btnHost">HOST GAME</button>
+      </div>
+      <div class="joinGame card">
+        <h2>JOIN A GAME</h2>
+        <input type="text" id="inputRoomCode" placeholder="Room Code" />
+        <input type="text" id="inputJoinUsername" placeholder="Username" />
+        <button id="btnJoin">JOIN</button>
+      </div>
+      <div class="waiting card">
+        <h1>Room Code: <span id="roomCodeLabel"></span></h1>
+        <h2>
+          To join, have your friends navigate to this page, and use the code to
+          join!
+        </h2>
+        <p>Game will start when all players are ready</p>
+        <p>
+          Players: <span id="numPlayersLabel">1</span>, Ready:
+          <span id="numPlayersReadyLabel"></span>
+        </p>
+        <button id="btnReady">READY</button>
+      </div>
+    </div>
+    <div id="game-container"></div>
+  </body>
+</html>

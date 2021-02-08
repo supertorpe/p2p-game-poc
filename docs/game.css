@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+input[type='text'],
+button {
+  border-color: black;
+}
+.container {
+  margin: 2rem;
+  width: calc(100% - 4rem);
+  height: calc(100% - 4rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.card {
+  margin: 0 auto;
+  background-color: lightgray;
+}
+.firstStep > button {
+  margin: 2rem;
+  width: 12rem;
+  height: 5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.hostGame {
+  display: none;
+  padding: 2rem;
+}
+.joinGame {
+  display: none;
+  padding: 2rem;
+  flex-direction: column;
+}
+.waiting {
+  display: none;
+  padding: 2rem;
+  flex-direction: column;
+}
+#roomCodeLabel {
+  color: darkblue;
+}
