@@ -150,10 +150,10 @@ class MainScene extends Phaser.Scene {
             if (rewriteHistoryFrom) {
                 this.rewriteHistory(rewriteHistoryFrom);
             }
+            if (DEBUG.GAMESTATE) this.debugGameState(this.latestGameState);
             this.latestGameState = this.nextGameState(
                 this.gameHistory[this.gameHistory.length - 1]
             );
-            if (DEBUG.GAMESTATE) this.debugGameState(this.latestGameState);
             this.gameHistory.push(this.latestGameState);
             // clean old gameHistory
             while (this.gameHistory.length > 100) {
@@ -424,7 +424,10 @@ class MainScene extends Phaser.Scene {
         let rewriteHistoryFromSlice;
         const historyLength = this.gameHistory.length;
         const firstSlice = this.gameHistory[0].slice;
-        this.commandBuffer.forEach((item, index) => {
+        const commandBufferSize = this.commandBuffer.length;
+        let removed = 0;
+        for (let index = 0; index < commandBufferSize; index++) {
+            let item = this.commandBuffer[index - removed];
             if (item.slice >= firstSlice && item.slice < firstSlice + historyLength) {
                 if (
                     item.slice < firstSlice + historyLength - 1 &&
@@ -434,9 +437,9 @@ class MainScene extends Phaser.Scene {
                 }
                 this.gameHistory[item.slice - firstSlice].commands[item.command[1]] =
                     item.command;
-                this.commandBuffer.splice(index, 1);
+                this.commandBuffer.splice(index - removed++, 1);
             }
-        });
+        }
         return rewriteHistoryFromSlice
             ? this.gameHistory[rewriteHistoryFromSlice - firstSlice]
             : null;
