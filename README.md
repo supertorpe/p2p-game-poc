@@ -68,21 +68,13 @@ They must implement the methods:
 
 - **constructor(peers, mesh, timeToStart)**: it must receive the array of peers, the mesh network and the future timestamp in which we want the game to start
 
-- **sceneCreate()**: must create phaser objects that are not associated with planck objects. The input methods must also be initialized (e.g. keyboard)
+- **sceneCreate()**: Here you write everything you would do in your "create ()".
 
-- **createInitialGameState()**: creates the world and initial planck and phaser objects. We must:
-
-Associate Phaser object to Planck object:
-
-planckObject.setUserData(phaserObject);
-
-Phaser objects for which we want interpolation:
-
-phaserObject.interpolate = true;
-
-Planck objects that correspond to the character of a peer:
-
-planckObject.peerIndex = peerIndex;
+Further, we must:
+    - Associate Phaser object to Planck object: **planckObject.setUserData(phaserObject);**
+    - Phaser objects for which we want interpolation: **phaserObject.interpolate = true;**
+    - Planck objects that correspond to the character of a peer: **planckObject.peerIndex = peerIndex;**
+    - return an object **{ world: _planck_world_, info: _extra_info_, }** where _extra_info_ is the info we want to store into the game state not related to planck bodies, like scores... 
 
 - **newGameState(prevState, newState, rewritingHistory)**: invoked when a new game state is being created, before calculating the physics.
 
@@ -91,8 +83,9 @@ Here it would be necessary to hook the colliders and perform treatment that depe
 - **computePhysics(body, command)**: here you have to apply the physics to the body depending on the command
 
 - **readCommand()**: reads the input method (e.g. keyboard) to generate and return a numeric value that represents it.
+Special value 0 is "no command"
 
-- **render(gameState)**: rendering of phaser objects associated with planck objects is automatic. Here the rest of the elements are rendered (e.g. scores)
+- **render(gameState)**: rendering of phaser objects associated with planck objects is automatic. The rest of the elements are rendered here (e.g. scores)
 
 - **cloneGameStateInfo(info)**: clones the game state info that is specific to the scene
 

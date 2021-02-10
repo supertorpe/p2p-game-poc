@@ -43,8 +43,7 @@ class MultiplayerScene extends Phaser.Scene {
     }
 
     create() {
-        this.sceneCreate();
-        const initialGameState = this.createInitialGameState();
+        const initialGameState = this.sceneCreate();
         initialGameState.slice = 0;
         initialGameState.time = this.timeToStart;
         initialGameState.bodies = [];
@@ -311,30 +310,29 @@ class MultiplayerScene extends Phaser.Scene {
     }
 
     // 'abstract' methods
-    createInitialGameState() {
-        throw new Error('createInitialGameState not implemented');
+    sceneCreate() {
+        throw new Error('sceneCreate not implemented');
     }
 
-    newGameState(prevState, newState, rewritingHistory) {
+    newGameState() {
         throw new Error('newGameState not implemented');
     }
 
-    sceneCreate() {
-        throw new Error('sceneCreate not implemented');
+    computePhysics() {
+        throw new Error('computePhysics not implemented');
     }
 
     readCommand() {
         throw new Error('readCommand not implemented');
     }
 
-    computePhysics(body, command) {
-        throw new Error('computePhysics not implemented');
+    render() {
+        throw new Error('render not implemented');
     }
 
     cloneGameStateInfo() {
         throw new Error('cloneGameStateInfo not implemented');
     }
-    
 
     // utility methods
 

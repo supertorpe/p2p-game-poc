@@ -54,9 +54,8 @@ class MainScene extends MultiplayerScene {
             // enable: true
         });
         this.joystickKeys = this.joyStick.createCursorKeys();
-    }
 
-    createInitialGameState() {
+        /////////////////// PLANCK WORLD ///////////////////
         const gravity = planck.Vec2(0, 0);
         const world = planck.World(gravity);
 
