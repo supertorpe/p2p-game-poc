@@ -100,8 +100,7 @@ const meshConfig = new MeshConfig(
     ],
   },
   {
-    ordered: false,
-    maxRetransmits: 1,
+    ordered: false
   },
   1000, // messagesAwaitingReplyMaxSize
   10000, // messagesAwaitingReplyMaxAge

@@ -54,6 +54,48 @@ If you change the tab or minimize the browser, the gameloop stops, but the comma
 When I need to generate random numbers, I use a pseudo-random algorithm with seeds (Mersenne Twister), in such a way that all pairs generate the same numbers each time.
 I keep these numbers in an array in case I have to rewrite the history of the game states, recover the ones that were generated at the time.
 
+## MultiplayerScene
+
+The logic of game state management, history rewriting, etc. it is encapsulated in the MultiplayerScene class.
+
+The GameStates contain meta information such as the slice, planck world and bodies... and an "info" field that is left open so that the scene includes what it needs (e.g. scores).
+
+The logic of the game is implemented in a class which inherits from MultiplayerScene.
+
+Considerations for scenes inheriting from MultiplayerScene:
+
+They must implement the methods:
+
+- **constructor(peers, mesh, timeToStart)**: it must receive the array of peers, the mesh network and the future timestamp in which we want the game to start
+
+- **sceneCreate()**: must create phaser objects that are not associated with planck objects. The input methods must also be initialized (e.g. keyboard)
+
+- **createInitialGameState()**: creates the world and initial planck and phaser objects. We must:
+
+Associate Phaser object to Planck object:
+
+planckObject.setUserData(phaserObject);
+
+Phaser objects for which we want interpolation:
+
+phaserObject.interpolate = true;
+
+Planck objects that correspond to the character of a peer:
+
+planckObject.peerIndex = peerIndex;
+
+- **newGameState(prevState, newState, rewritingHistory)**: invoked when a new game state is being created, before calculating the physics.
+
+Here it would be necessary to hook the colliders and perform treatment that depends exclusively on the previous state. The last parameter indicates whether it is being invoked within the history rewrite loop.
+
+- **computePhysics(body, command)**: here you have to apply the physics to the body depending on the command
+
+- **readCommand()**: reads the input method (e.g. keyboard) to generate and return a numeric value that represents it.
+
+- **render(gameState)**: rendering of phaser objects associated with planck objects is automatic. Here the rest of the elements are rendered (e.g. scores)
+
+- **cloneGameStateInfo(info)**: clones the game state info that is specific to the scene
+
 ## The game
 
 The game is very simple and does not have much value.
