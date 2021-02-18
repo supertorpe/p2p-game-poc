@@ -152,7 +152,7 @@ class MultiplayerScene extends Phaser.Scene {
     }
 
     renderObjects(gameStateIdx) {
-        const now = getLocalTimestamp();
+        const now = getLocalTimestamp() - TIMESLICE * RENDER_DELAY;
         const gameState = this.gameHistory[gameStateIdx];
         // make interpolation ?
         const makeInterpolation = (MAKE_INTERPOLATION && this.gameHistory.length > gameStateIdx + 1);
